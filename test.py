@@ -1,33 +1,25 @@
-import os
-import cv2
 from tensorflow import keras
 import numpy
 import tensorflow as tf
-import tensorflow
-import keras.backend as K
 import numpy as np
-import sklearn.model_selection
-import copy
-import pydot
-import graphviz
 from matplotlib import pyplot as plt
 from skimage.io import imshow, show
+from skimage.io import imread, imsave
 
+#embedder = keras.models.load_model('embedder', compile=False)
+#extractor = keras.models.load_model('extractor', compile=False)
 
-model = keras.models.load_model('NETWORK_WITH_CUSTOM_LOSS.h5', compile=True)
+network = keras.models.load_model('full')
 
-train = tf.keras.preprocessing.image_dataset_from_directory("C:/Users/aizee/Desktop/dataset", image_size=(128, 128), shuffle=False, batch_size=1)
-
+train = tf.keras.preprocessing.image_dataset_from_directory("C:/Users/aizee/Desktop/dataset", image_size=(128, 128), shuffle=True, batch_size=1)
 res = []
 for element in train.as_numpy_iterator():
-    scale = element[0] / 255
-    res.append(np.array(scale))
+    res.append(element[0]/255)
     if len(res) == 1920:
         break
 
 res = np.array(res)
 res = res.reshape((1920, 128, 128, 3))
-
 
 def rgb2gray(rgb):
     return numpy.dot(rgb[..., :3], [0.2989, 0.5870, 0.1140])
@@ -44,38 +36,40 @@ y_train = y_train[:-48080]
 x_test = x_test[:-9520]
 y_test = y_test[:-9520]
 
-from skimage.io import imread
 
-watermark  = x_test[0]
-#coverimage = imread("C:/Users/aizee/Pictures/x.jpg").astype(np.float64)
-#coverimage /= 255
+watermark  = x_train[0]
 coverimage = res[0]
-data = [np.array(watermark).reshape((1, 32, 32, 1)), np.array(coverimage).reshape((1, 128, 128, 3))]
 
-print(data[0].shape)
-print(data[1].shape)
-res1, res2 = model.predict(data, batch_size=1)
+#imread("C:/Users/aizee/Pictures/x.jpg").astype('float32')/255
+print(coverimage)
+#coverimage = res[2]
+#data = [np.array(watermark).reshape((1, 32, 32, 1)), np.array(coverimage).reshape((1, 128, 128, 3))]
+
+extracted, marked = network.predict([np.array(watermark).reshape((1, 32, 32, 1)), np.array(coverimage).reshape((1, 128, 128, 3))], batch_size=1)
+print(marked)
+#extracted = extractor.predict(marked, batch_size=1)
 fig = plt.figure()
 sb = fig.add_subplot(2, 3, 1)
 sb.set_title("Исходное изображение")
-imshow(coverimage)
+imshow(coverimage.reshape((128, 128, 3)))
 
 sb = fig.add_subplot(2, 3, 2)
 sb.set_title("ЦВЗ")
-imshow(watermark)
+imshow(watermark.reshape((32, 32)), cmap='gray')
 
 sb = fig.add_subplot(2, 3, 3)
 sb.set_title("Изображение с ЦВЗ")
-imshow(res2.reshape((128, 128, 3)))
+imshow(marked.reshape((128, 128, 3)), cmap = 'gray')
 
 sb = fig.add_subplot(2, 3, 4)
 sb.set_title("Извлеченный ЦВЗ")
-imshow(res1.reshape((32, 32, 1)), cmap='gray')
+imshow(extracted.reshape((32, 32, 1)), cmap='gray')
 
 sb = fig.add_subplot(2, 3, 5)
 sb.set_title("Разница между ЦВЗ и извлеч. ЦВЗ")
-imshow(watermark - res1.reshape((32, 32)), cmap='gray')
+imshow(watermark - extracted.reshape((32, 32)), cmap='gray')
 
-print("Максимальная разница м/у исходным и изобр. с ЦВЗ", np.max(np.max(coverimage - res2)))
-print("Максимальная разница м/у исходным ЦВЗ и извлеченным ЦВЗ", np.max(np.abs(watermark - res1.reshape((32, 32)))))
+print("Максимальная разница м/у исходным и изобр. с ЦВЗ", np.max(np.abs(coverimage - marked.reshape((128, 128, 3)))))
+print("Максимальная разница м/у исходным ЦВЗ и извлеченным ЦВЗ", np.max(np.abs(watermark - extracted.reshape((32, 32)))))
+imsave("C:/Users/aizee/Pictures/marked.jpg", marked.reshape((128, 128, 3)))
 show()
