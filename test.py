@@ -44,8 +44,7 @@ x_test = x_test[:-9520]
 y_test = y_test[:-9520]
 
 
-watermark = x_train[16
-]
+watermark = x_train[16]
 print(watermark.shape)
 from skimage.io import imread
 
@@ -67,136 +66,137 @@ extracted_5, marked_5 = network.predict(
     [np.array(watermark).reshape((1,32, 32, 1)), np.array(coverimage_5).reshape((1, 128, 128, 3))], batch_size=1)
 
 fig_1 = plt.figure()
-sb = fig_1.add_subplot(2, 3, 1)
+sb = fig_1.add_subplot(2, 2, 1)
 sb.set_title("Исходное изображение")
 imshow(coverimage_1)
 
-sb = fig_1.add_subplot(2, 3, 2)
+sb = fig_1.add_subplot(2, 2, 2)
 sb.set_title("ЦВЗ")
 imshow(watermark)
 
-sb = fig_1.add_subplot(2, 3, 3)
+sb = fig_1.add_subplot(2, 2, 3)
 sb.set_title("Изображение с ЦВЗ")
 imshow(marked_1.reshape((128, 128, 3)))
 
-sb = fig_1.add_subplot(2, 3, 4)
+sb = fig_1.add_subplot(2, 2, 4)
 sb.set_title("Извлеченный ЦВЗ")
 imshow(extracted_1.reshape((32, 32, 1)), cmap='gray')
 
-sb = fig_1.add_subplot(2, 3, 5)
-sb.set_title("Разница между ЦВЗ и извлеч. ЦВЗ")
-imshow(watermark - extracted_1.reshape((32, 32)), cmap='gray')
-
-print("Максимальная разница м/у исходным и изобр. с ЦВЗ",
+print("1:")
+print("\tМаксимальная разница м/у исходным и изобр. с ЦВЗ",
       np.max(np.abs(coverimage_1 - marked_1.reshape((128, 128, 3)))))
-print("Максимальная разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
+print("\tМаксимальная разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
       np.max(np.abs(watermark - extracted_1.reshape((32, 32)))))
+print("\tСредняя разница м/у исходным и изобр. с ЦВЗ",
+      np.mean(np.abs(coverimage_1 - marked_1.reshape((128, 128, 3)))))
+print("\tСредняя разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
+      np.mean(np.abs(watermark - extracted_1.reshape((32, 32)))))
 
 fig_2 = plt.figure()
-sb = fig_2.add_subplot(2, 3, 1)
+sb = fig_2.add_subplot(2, 2, 1)
 sb.set_title("Исходное изображение")
 imshow(coverimage_2)
 
-sb = fig_2.add_subplot(2, 3, 2)
+sb = fig_2.add_subplot(2, 2, 2)
 sb.set_title("ЦВЗ")
 imshow(watermark)
 
-sb = fig_2.add_subplot(2, 3, 3)
+sb = fig_2.add_subplot(2, 2, 3)
 sb.set_title("Изображение с ЦВЗ")
 imshow(marked_2.reshape((128, 128, 3)))
 
-sb = fig_2.add_subplot(2, 3, 4)
+sb = fig_2.add_subplot(2, 2, 4)
 sb.set_title("Извлеченный ЦВЗ")
 imshow(extracted_2.reshape((32, 32)), cmap='gray')
 
-sb = fig_2.add_subplot(2, 3, 5)
-sb.set_title("Разница между ЦВЗ и извлеч. ЦВЗ")
-imshow(watermark - extracted_2.reshape((32, 32)), cmap='gray')
-
-print("Максимальная разница м/у исходным и изобр. с ЦВЗ",
+print("2:")
+print("\tМаксимальная разница м/у исходным и изобр. с ЦВЗ",
       np.max(np.abs(coverimage_2 - marked_2.reshape((128, 128, 3)))))
-print("Максимальная разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
+print("\tМаксимальная разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
       np.max(np.abs(watermark - extracted_2.reshape((32, 32)))))
+print("\tСредняя разница м/у исходным и изобр. с ЦВЗ",
+      np.mean(np.abs(coverimage_2 - marked_2.reshape((128, 128, 3)))))
+print("\tСредняя разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
+      np.mean(np.abs(watermark - extracted_2.reshape((32, 32)))))
 
 fig_3 = plt.figure()
-sb = fig_3.add_subplot(2, 3, 1)
+sb = fig_3.add_subplot(2, 2, 1)
 sb.set_title("Исходное изображение")
 imshow(coverimage_3)
 
-sb = fig_3.add_subplot(2, 3, 2)
+sb = fig_3.add_subplot(2, 2, 2)
 sb.set_title("ЦВЗ")
 imshow(watermark)
 
-sb = fig_3.add_subplot(2, 3, 3)
+sb = fig_3.add_subplot(2, 2, 3)
 sb.set_title("Изображение с ЦВЗ")
 imshow(marked_3.reshape((128, 128, 3)))
 
-sb = fig_3.add_subplot(2, 3, 4)
+sb = fig_3.add_subplot(2, 2, 4)
 sb.set_title("Извлеченный ЦВЗ")
 imshow(extracted_3.reshape((32, 32)), cmap='gray')
 
-sb = fig_3.add_subplot(2, 3, 5)
-sb.set_title("Разница между ЦВЗ и извлеч. ЦВЗ")
-imshow(watermark - extracted_3.reshape((32, 32)), cmap='gray')
-
-print("Максимальная разница м/у исходным и изобр. с ЦВЗ",
+print("3:")
+print("\tМаксимальная разница м/у исходным и изобр. с ЦВЗ",
       np.max(np.abs(coverimage_3 - marked_3.reshape((128, 128, 3)))))
-print("Максимальная разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
+print("\tМаксимальная разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
       np.max(np.abs(watermark - extracted_3.reshape((32, 32)))))
+print("\tСредняя разница м/у исходным и изобр. с ЦВЗ",
+      np.mean(np.abs(coverimage_3 - marked_3.reshape((128, 128, 3)))))
+print("\tСредняя разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
+      np.mean(np.abs(watermark - extracted_3.reshape((32, 32)))))
 
 fig_4 = plt.figure()
-sb = fig_4.add_subplot(2, 3, 1)
+sb = fig_4.add_subplot(2, 2, 1)
 sb.set_title("Исходное изображение")
 imshow(coverimage_4)
 
-sb = fig_4.add_subplot(2, 3, 2)
+sb = fig_4.add_subplot(2, 2, 2)
 sb.set_title("ЦВЗ")
 imshow(watermark)
 
-sb = fig_4.add_subplot(2, 3, 3)
+sb = fig_4.add_subplot(2, 2, 3)
 sb.set_title("Изображение с ЦВЗ")
 imshow(marked_4.reshape((128, 128, 3)))
 
-sb = fig_4.add_subplot(2, 3, 4)
+sb = fig_4.add_subplot(2, 2, 4)
 sb.set_title("Извлеченный ЦВЗ")
 imshow(extracted_4.reshape((32, 32)), cmap='gray')
 
-sb = fig_4.add_subplot(2, 3, 5)
-sb.set_title("Разница между ЦВЗ и извлеч. ЦВЗ")
-imshow(watermark - extracted_4.reshape((32, 32)), cmap='gray')
-
-print("Максимальная разница м/у исходным и изобр. с ЦВЗ",
+print("4:")
+print("\tМаксимальная разница м/у исходным и изобр. с ЦВЗ",
       np.max(np.abs(coverimage_4 - marked_4.reshape((128, 128, 3)))))
-print("Максимальная разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
+print("\tМаксимальная разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
       np.max(np.abs(watermark - extracted_4.reshape((32, 32)))))
+print("\tСредняя разница м/у исходным и изобр. с ЦВЗ",
+      np.mean(np.abs(coverimage_4 - marked_4.reshape((128, 128, 3)))))
+print("\tСредняя разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
+      np.mean(np.abs(watermark - extracted_4.reshape((32, 32)))))
 
 fig_5 = plt.figure()
-sb = fig_5.add_subplot(2, 3, 1)
+sb = fig_5.add_subplot(2, 2, 1)
 sb.set_title("Исходное изображение")
 imshow(coverimage_5)
 
-sb = fig_5.add_subplot(2, 3, 2)
+sb = fig_5.add_subplot(2, 2, 2)
 sb.set_title("ЦВЗ")
 imshow(watermark)
 
-sb = fig_5.add_subplot(2, 3, 3)
+sb = fig_5.add_subplot(2, 2, 3)
 sb.set_title("Изображение с ЦВЗ")
 imshow(marked_5.reshape((128, 128, 3)))
 
-sb = fig_5.add_subplot(2, 3, 4)
+sb = fig_5.add_subplot(2, 2, 4)
 sb.set_title("Извлеченный ЦВЗ")
 imshow(extracted_5.reshape((32, 32)), cmap='gray')
 
-sb = fig_5.add_subplot(2, 3, 5)
-sb.set_title("Разница между ЦВЗ и извлеч. ЦВЗ")
-imshow(watermark - extracted_5.reshape((32, 32)), cmap='gray')
-
-print("Максимальная разница м/у исходным и изобр. с ЦВЗ",
+print("5:")
+print("\tМаксимальная разница м/у исходным и изобр. с ЦВЗ",
       np.max(np.abs(coverimage_5 - marked_5.reshape((128, 128, 3)))))
-print("Максимальная разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
+print("\tМаксимальная разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
       np.max(np.abs(watermark - extracted_5.reshape((32, 32)))))
-
-
+print("\tСредняя разница м/у исходным и изобр. с ЦВЗ",
+      np.mean(np.abs(coverimage_5 - marked_5.reshape((128, 128, 3)))))
+print("\tСредняя разница м/у исходным ЦВЗ и извлеченным ЦВЗ",
+      np.mean(np.abs(watermark - extracted_5.reshape((32, 32)))))
 show()
-
-exit(111)
